@@ -65,7 +65,7 @@ class SwapCard extends StatelessWidget {
                             ),
                             Text(
                               age,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,
                               ),
@@ -109,7 +109,7 @@ class SwapCard extends StatelessWidget {
                                   color: Colors.white.withOpacity(0.2),
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                     top: 3,
                                     bottom: 3,
                                     left: 10,
@@ -117,7 +117,7 @@ class SwapCard extends StatelessWidget {
                                   ),
                                   child: Text(
                                     description[index],
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ));

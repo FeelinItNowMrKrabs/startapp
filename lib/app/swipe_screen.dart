@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:startapp/constants/constatnts.dart';
 import 'package:startapp/widgets/swap_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
@@ -90,16 +91,15 @@ class _SwipeScreenState extends State<SwipeScreen> {
             title: Text(widget.title),
             centerTitle: true,
             textTheme: Theme.of(context).textTheme.apply(
-                  bodyColor: const Color(0xff431C53),
-                  displayColor: const Color(0xff431C53),
+                  bodyColor: Constants.primary_cyan,
                 ),
             gradient: const LinearGradient(colors: [
-              Color(0xffFF007F),
-              Color(0xffDE2182),
-              Color(0xffB8189A),
+              Constants.primary_purple,
+              Constants.primary_lightblue,
+              Constants.primary_purple,
             ])),
         body: Container(
-            color: const Color(0xffB8189A),
+            color: Constants.primary_blue,
             child: Column(children: [
               SizedBox(
                 height: 550,
@@ -135,7 +135,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                       style: TextStyle(color: Color(0xff431C53)),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xffDE2182),
+                      primary: Constants.primary_pink,
                     ),
                   ),
                   ElevatedButton(
@@ -147,8 +147,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                       style: TextStyle(color: Color(0xff431C53)),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xffDE2182),
-                    ),
+                        primary: Constants.primary_pink),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -156,10 +155,10 @@ class _SwipeScreenState extends State<SwipeScreen> {
                     },
                     child: const Text(
                       "Like",
-                      style: TextStyle(color: Color(0xff431C53)),
+                      style: TextStyle(color: Constants.primary_purple),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xffDE2182),
+                      primary: Constants.primary_pink,
                     ),
                   ),
                 ],
