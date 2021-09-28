@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:startapp/app/settings_page.dart';
 import 'package:startapp/app/swipe_screen.dart';
 import 'package:startapp/constants/constatnts.dart';
 import 'package:startapp/provider/bottom_nav_provider.dart';
@@ -66,16 +68,9 @@ class Home extends ConsumerWidget {
       case 2:
         return Container(
           color: Colors.red,
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.all(40.0),
-            child: Center(
-                child: Text(
-              'Пиздуй от суда, тут ничего еще не готово!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-              ),
-            )),
+            child: SettingScreen(),
           ),
         );
       default:
