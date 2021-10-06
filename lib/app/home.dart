@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:startapp/app/chat/chat_screen.dart';
 import 'package:startapp/app/settings_page.dart';
 import 'package:startapp/app/swipe_screen.dart';
 import 'package:startapp/constants/constatnts.dart';
@@ -56,14 +57,7 @@ class Home extends ConsumerWidget {
       case 1:
         return Container(
           color: Colors.amber,
-          child: const Center(
-              child: Text(
-            'Хули пишел?',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-            ),
-          )),
+          child: ChatScreen(),
         );
       case 2:
         return Container(

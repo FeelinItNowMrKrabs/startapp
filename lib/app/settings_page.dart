@@ -9,16 +9,19 @@ class SettingScreen extends ConsumerWidget {
     return Center(
       child: Column(
         children: [
-          RaisedButton(
-            onPressed: () => _auth.signOut(),
-            child: Text("Logout"),
+          Container(
+            height: 300,
           ),
           Text(
-            'Пиздуй от суда, тут ничего еще не готово!',
+            'Tут ничего еще не готово!',
             style: TextStyle(
               color: Colors.white,
               fontSize: 32,
             ),
+          ),
+          RaisedButton(
+            onPressed: () => _auth.signOut(),
+            child: Text("Logout"),
           ),
         ],
       ),
