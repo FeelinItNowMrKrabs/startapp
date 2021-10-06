@@ -6,6 +6,8 @@ import 'package:startapp/app/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:startapp/provider/firebase_auth_provider.dart';
 
+import 'model/user.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,9 +21,7 @@ class StartApp extends ConsumerWidget {
     return MaterialApp(
       home: AuthWidget(
         nonSignedInBuilder: (_) => Consumer(builder: (context, watch, _) {
-          return Container(
-            child: LoginPage(),
-          );
+          return LoginPage();
         }),
         signedInBuilder: (_) => Home(),
       ),

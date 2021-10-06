@@ -28,15 +28,15 @@ class _SwipeScreenState extends State<SwipeScreen> {
     'Баекэндэр',
     'Фрэнтенд',
     'Hussar',
-    'Bidlo',
+    'Энтон',
     'Кисель'
   ];
 
   final List<List<String>> _description = [
-    ['Go', 'Java', 'Penis', 'Python'],
-    ['Писать дичь', 'Jabascrэпт', 'Говно жрать'],
-    ['ootska', 'Dirochka', 'экоnomica', 'vils'],
-    ['Вязать', 'Вязка', 'Связки', 'Вязание'],
+    ['Go', 'Java', 'Flask', 'Python'],
+    ['Писать дичь', 'Jabascrэпт', 'Ужас'],
+    ['ootska', 'экоnomica', 'vils'],
+    ['Вязать', 'Вязка', 'Вязание'],
     ['КОТасться', 'Два мальчика', 'Стены'],
   ];
 
@@ -60,21 +60,24 @@ class _SwipeScreenState extends State<SwipeScreen> {
           ),
           likeAction: () {
             _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Liked $_images[i]}"),
+              content: Text("Liked ${_title[i]}"),
               duration: const Duration(milliseconds: 500),
             ));
+            print("Sent like to backend");
           },
           nopeAction: () {
             _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Nope $_images[i]}"),
+              content: Text("Nope ${_title[i]}"),
               duration: const Duration(milliseconds: 500),
             ));
+            print("Sent like to backend");
           },
           superlikeAction: () {
             _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Superliked $_images[i]}"),
+              content: Text("Superliked ${_title[i]}"),
               duration: const Duration(milliseconds: 500),
             ));
+            print("Sent like to backend");
           }));
     }
 
