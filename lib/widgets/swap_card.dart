@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class SwapCard extends StatelessWidget {
-  final String image;
-  final String title;
-  final List<String> description;
   final String age;
+  final String name;
+  final String picture;
+  final List<dynamic> tags;
   final dynamic size;
 
   const SwapCard(
-      {required this.image,
-      required this.title,
-      required this.description,
-      required this.age,
+      {required this.age,
+      required this.name,
+      required this.picture,
+      required this.tags,
       this.size});
 
   @override
@@ -24,8 +24,8 @@ class SwapCard extends StatelessWidget {
             width: size.width,
             height: size.height,
             decoration: BoxDecoration(
-              image:
-                  DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+              image: DecorationImage(
+                  image: AssetImage(picture), fit: BoxFit.cover),
             ),
           ),
           Container(
@@ -54,7 +54,7 @@ class SwapCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              title,
+                              name,
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
@@ -100,7 +100,7 @@ class SwapCard extends StatelessWidget {
                         height: 15,
                       ),
                       Row(
-                        children: List.generate(description.length, (index) {
+                        children: List.generate(tags.length, (index) {
                           return Padding(
                               padding: const EdgeInsets.only(right: 8),
                               child: Container(
@@ -116,7 +116,7 @@ class SwapCard extends StatelessWidget {
                                     right: 10,
                                   ),
                                   child: Text(
-                                    description[index],
+                                    tags[index],
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                 ),

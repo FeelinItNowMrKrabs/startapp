@@ -20,17 +20,13 @@ class AuthWidget extends ConsumerWidget {
     final authStateChanges = ref.watch(authStateChangesProvider);
     return authStateChanges.when(
       data: (user) => _data(context, user),
-      loading: () => const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-      error: (_, __) => const Scaffold(
-        body: EmptyContent(
-          title: 'Not good, something bad lmao',
-          message: 'Cant load anything, sucks to be you))',
-        ),
-      ),
+      error:
+          (Object error, StackTrace? stackTrace, AsyncData<User?>? previous) {
+        return Container();
+      },
+      loading: (AsyncValue<User?>? previous) {
+        return Container();
+      },
     );
   }
 

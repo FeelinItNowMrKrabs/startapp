@@ -11,6 +11,7 @@ import 'model/user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Future.delayed(const Duration(milliseconds: 50));
   runApp(ProviderScope(child: StartApp()));
 }
 
