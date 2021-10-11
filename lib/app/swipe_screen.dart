@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:startapp/constants/constatnts.dart';
+import 'package:startapp/model/user_form.dart';
 import 'package:startapp/widgets/swap_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SwipeScreen extends StatefulWidget {
+class SwipeScreen extends ConsumerStatefulWidget {
   const SwipeScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -13,74 +16,68 @@ class SwipeScreen extends StatefulWidget {
   _SwipeScreenState createState() => _SwipeScreenState();
 }
 
-class _SwipeScreenState extends State<SwipeScreen> {
+class _SwipeScreenState extends ConsumerState<SwipeScreen> {
   final List<SwipeItem> _swipeItems = <SwipeItem>[];
   late MatchEngine _matchEngine;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  final List<String> _images = [
-    'assets/programmer.jpeg',
-    'assets/jabascript.jpeg',
-    'assets/hussar.png',
-    'assets/anton_pizza.png',
-    'assets/кисель.png',
-  ];
-  final List<String> _title = [
-    'Баекэндэр',
-    'Фрэнтенд',
-    'Hussar',
-    'Энтон',
-    'Кисель'
-  ];
+  //List<QueryDocumentSnapshot<UserForm>>? _userForms;
 
-  final List<List<String>> _description = [
-    ['Go', 'Java', 'Flask', 'Python'],
-    ['Писать дичь', 'Jabascrэпт', 'Ужас'],
-    ['ootska', 'экоnomica', 'vils'],
-    ['Вязать', 'Вязка', 'Вязание'],
-    ['КОТасться', 'Два мальчика', 'Стены'],
-  ];
-
-  final List<String> _age = [
-    '76',
-    '4',
-    'Вечен',
-    '46',
-    'Сдох бля лмао',
-  ];
-
-  @override
-  void initState() {
-    for (int i = 0; i < _images.length; i++) {
-      _swipeItems.add(SwipeItem(
+  Future<String>? builder() async {
+    await FirebaseFirestore.instance
+        .collection('user_forms')
+        .withConverter<UserForm>(
+          fromFirestore: (snapshot, _) => UserForm.fromJson(snapshot.data()!),
+          toFirestore: (userForm, _) => userForm.toJson(),
+        )
+        .get()
+        .then((QuerySnapshot userFormQuerySnapshot) {
+      for (var _userForms in userFormQuerySnapshot.docs) {
+        _swipeItems.add(SwipeItem(
           content: Content(
-            image: _images[i],
-            title: _title[i],
-            description: _description[i],
-            age: _age[i],
+            age: _userForms.get('age'),
+            name: _userForms.get('name'),
+            picture: _userForms.get('picture'),
+            tags: _userForms.get('tags'),
+            uuid: _userForms.get('uuid'),
           ),
           likeAction: () {
-            _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Liked ${_title[i]}"),
-              duration: const Duration(milliseconds: 500),
+            _scaffoldKey.currentState!.showSnackBar(const SnackBar(
+              content: Text("Liked Poo"),
+              duration: Duration(milliseconds: 500),
             ));
             print("Sent like to backend");
           },
           nopeAction: () {
-            _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Nope ${_title[i]}"),
-              duration: const Duration(milliseconds: 500),
+            _scaffoldKey.currentState!.showSnackBar(const SnackBar(
+              content: Text("Liked Poo"),
+              duration: Duration(milliseconds: 500),
             ));
             print("Sent like to backend");
           },
           superlikeAction: () {
-            _scaffoldKey.currentState!.showSnackBar(SnackBar(
-              content: Text("Superliked ${_title[i]}"),
-              duration: const Duration(milliseconds: 500),
+            _scaffoldKey.currentState!.showSnackBar(const SnackBar(
+              content: Text("Liked Poo"),
+              duration: Duration(milliseconds: 500),
             ));
             print("Sent like to backend");
-          }));
-    }
+          },
+        ));
+      }
+    });
+    _matchEngine = MatchEngine(swipeItems: _swipeItems);
+    return 'Good';
+  }
 
+  @override
+  initState() {
+    _swipeItems.add(SwipeItem(
+        content: Content(
+      age: '12',
+      name: 'burger',
+      picture: 'assets/кисель.png',
+      tags: ['Bruh', 'Mrah'],
+      uuid: '12',
+    )));
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
     super.initState();
   }
@@ -88,93 +85,114 @@ class _SwipeScreenState extends State<SwipeScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-        key: _scaffoldKey,
-        appBar: NewGradientAppBar(
-            title: Text(widget.title),
-            centerTitle: true,
-            textTheme: Theme.of(context).textTheme.apply(
-                  bodyColor: Constants.primary_cyan,
-                ),
-            gradient: const LinearGradient(colors: [
-              Constants.primary_purple,
-              Constants.primary_lightblue,
-              Constants.primary_purple,
-            ])),
-        body: Container(
-            color: Constants.primary_blue,
-            child: Column(children: [
-              SizedBox(
-                height: 550,
-                child: SwipeCards(
-                  matchEngine: _matchEngine,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SwapCard(
-                      image: _swipeItems[index].content.image,
-                      title: _swipeItems[index].content.title,
-                      description: _swipeItems[index].content.description,
-                      age: _swipeItems[index].content.age,
-                      size: size,
-                    );
-                  },
-                  onStackFinished: () {
-                    // ignore: deprecated_member_use
-                    _scaffoldKey.currentState!.showSnackBar(const SnackBar(
-                      content: Text("Stack Finished"),
-                      duration: Duration(milliseconds: 500),
-                    ));
-                  },
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _matchEngine.currentItem!.nope();
-                    },
-                    child: const Text(
-                      "Nope",
-                      style: TextStyle(color: Color(0xff431C53)),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Constants.primary_pink,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _matchEngine.currentItem!.superLike();
-                    },
-                    child: const Text(
-                      "Superlike",
-                      style: TextStyle(color: Color(0xff431C53)),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Constants.primary_pink),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _matchEngine.currentItem!.like();
-                    },
-                    child: const Text(
-                      "Like",
-                      style: TextStyle(color: Constants.primary_purple),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Constants.primary_pink,
-                    ),
-                  ),
-                ],
-              )
-            ])));
+
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.headline2!,
+      textAlign: TextAlign.center,
+      child: FutureBuilder<String>(
+          future: builder(),
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.hasData) {
+              return Scaffold(
+                  key: _scaffoldKey,
+                  appBar: NewGradientAppBar(
+                      title: Text(widget.title),
+                      centerTitle: true,
+                      textTheme: Theme.of(context).textTheme.apply(
+                            bodyColor: Constants.primary_cyan,
+                          ),
+                      gradient: const LinearGradient(colors: [
+                        Constants.primary_purple,
+                        Constants.primary_lightblue,
+                        Constants.primary_purple,
+                      ])),
+                  body: Container(
+                      color: Constants.primary_blue,
+                      child: Column(children: [
+                        SizedBox(
+                          height: 550,
+                          child: SwipeCards(
+                            matchEngine: _matchEngine,
+                            itemBuilder: (BuildContext context, int index) {
+                              return SwapCard(
+                                age: _swipeItems[index].content.age,
+                                name: _swipeItems[index].content.name,
+                                picture: _swipeItems[index].content.picture,
+                                tags: _swipeItems[index].content.tags,
+                                size: size,
+                              );
+                            },
+                            onStackFinished: () {
+                              _scaffoldKey.currentState!
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Stack Finished"),
+                                duration: Duration(milliseconds: 500),
+                              ));
+                            },
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                _matchEngine.currentItem!.nope();
+                              },
+                              child: const Text(
+                                "Nope",
+                                style: TextStyle(color: Color(0xff431C53)),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Constants.primary_pink,
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _matchEngine.currentItem!.superLike();
+                              },
+                              child: const Text(
+                                "Superlike",
+                                style: TextStyle(color: Color(0xff431C53)),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Constants.primary_pink),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _matchEngine.currentItem!.like();
+                              },
+                              child: const Text(
+                                "Like",
+                                style:
+                                    TextStyle(color: Constants.primary_purple),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Constants.primary_pink,
+                              ),
+                            ),
+                          ],
+                        )
+                      ])));
+            } else {
+              return Container(child: const Text('Wait a bit'));
+            }
+          }),
+    );
   }
 }
 
 class Content {
-  final String? image;
-  final String? title;
-  final List<String>? description;
-  final String? age;
+  final String age;
+  final String name;
+  final String picture;
 
-  Content({this.image, this.title, this.description, this.age});
+  final List<dynamic> tags;
+  final String uuid;
+
+  Content(
+      {required this.age,
+      required this.name,
+      required this.picture,
+      required this.tags,
+      required this.uuid});
 }
